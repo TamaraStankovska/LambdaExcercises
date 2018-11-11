@@ -4,16 +4,28 @@ import domain.Task;
 import domain.TaskType;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Function;
+import java.util.function.Predicate;
+import java.util.stream.Stream;
 
 public class Task1 {
 
     public static void main(String[] args) {
         List<Task> tasks = Task.getTasks();
-        List<String> titles = taskTitles(tasks);
+      /*  List<String> titles = taskTitles(tasks);
         for (String title : titles) {
             out.println(title);
-        }
+        }*/
+
+      Predicate<Task> taskPredicate=task -> task.getType()==TaskType.READING;
+      Function<Task,String> extractTitles=Task::getTitle;
+      getTitles(tasks,taskPredicate)
+              .forEach(System.out::println);
+
     }
+
+
+
 
     private static List<String> taskTitles(List<Task> tasks) {
         List<String> readingTitles = new ArrayList<>();
@@ -23,6 +35,25 @@ public class Task1 {
             }
         }
         return readingTitles;
+    }
+
+ /*   private static void taskTitlesLambdas(List<Task> tasks){
+                tasks.stream()
+                .filter(task -> (task.getType()==TaskType.READING))
+                .forEach(System.out::println);
+    }
+*/
+
+
+
+    private static List<String> getTitles(List<Task> tasks, Predicate<Task> predicate){
+        List<String> titles=new ArrayList<>();
+        for(Task task: tasks)
+        {
+            if(predicate.test(task)) {
+                titles.add(task.getTitle()); }
+        }
+        return titles;
     }
 
 }
