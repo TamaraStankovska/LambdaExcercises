@@ -12,12 +12,7 @@ public class Task1 {
 
     public static void main(String[] args) {
         List<Task> tasks = Task.getTasks();
-      /*  List<String> titles = taskTitles(tasks);
-        for (String title : titles) {
-            out.println(title);
-        }*/
-
-      Predicate<Task> taskPredicate=task -> task.getType()==TaskType.READING;
+       Predicate<Task> taskPredicate=task -> task.getType()==TaskType.READING;
       Function<Task,String> extractTitles=Task::getTitle;
       getTitles(tasks,taskPredicate)
               .forEach(System.out::println);
@@ -36,14 +31,6 @@ public class Task1 {
         }
         return readingTitles;
     }
-
- /*   private static void taskTitlesLambdas(List<Task> tasks){
-                tasks.stream()
-                .filter(task -> (task.getType()==TaskType.READING))
-                .forEach(System.out::println);
-    }
-*/
-
 
 
     private static List<String> getTitles(List<Task> tasks, Predicate<Task> predicate){
