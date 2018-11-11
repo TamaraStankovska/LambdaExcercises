@@ -2,17 +2,86 @@ import static java.lang.System.out;
 
 import domain.Task;
 import domain.TaskType;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+
+import java.security.cert.CollectionCertStoreParameters;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class Task2 {
 
     public static void main(String[] args) {
         List<Task> tasks = Task.getTasks();
 
-        List<Task> readingTasks = new ArrayList<>();
+
+        // Find all reading task titles sorted by their creation date
+
+        System.out.println("----Reading Task Titles sorted by Creation Date----");
+        List<Task> sortedTitles=tasks.stream()
+                .filter(task -> task.getType()==TaskType.READING)
+                .sorted(Comparator.comparing(Task::getCreatedOn))
+                .collect(Collectors.toList());
+
+        sortedTitles.stream()
+                .forEach(title -> System.out.println(title.getTitle()));
+
+
+        System.out.println("\n");
+        System.out.println("----Reading Task Titles sorted by Creation Date in Reverse----");
+        List<Task> reversedTitles=tasks.stream()
+                .filter(task -> task.getType()==TaskType.READING)
+                .sorted(Comparator.comparing(Task::getCreatedOn).reversed())
+                .collect(Collectors.toList());
+
+        reversedTitles.stream()
+                .forEach(title -> System.out.println(title.getTitle()));
+
+
+        System.out.println("\n");
+        System.out.println("----Distinct tasks----");
+        List<Task> distinct=tasks.stream()
+                .distinct()
+                .collect(Collectors.toList());
+        distinct.stream()
+                .forEach(System.out::println);
+
+
+
+        System.out.println("\n");
+        System.out.println("----Top 2 Reading Tasks Sorted by Creation Date----");
+        List<Task> topTasks=tasks.stream()
+                .filter(task -> task.getType()==TaskType.READING)
+                .sorted(Comparator.comparing(Task::getCreatedOn))
+                .limit(2)
+                .collect(Collectors.toList());
+        topTasks.stream()
+                .forEach(task -> System.out.println(task.getTitle()));
+
+
+        System.out.println("\n");
+        System.out.println("----Unique Tags for All Tasks----");
+        List<String> uniqueTags = tasks.stream().flatMap(t -> t.getTags().stream()).collect(Collectors.toList());
+        uniqueTags.stream()
+                .distinct()
+                .forEach(System.out::println);
+
+
+        System.out.println("\n");
+        System.out.println("----Check for a Tag BOOK----");
+        List<Task> haveTagBook=tasks.stream()
+                .filter(task -> task.getType()==TaskType.READING)
+                .filter(task -> task.getTags().contains("books"))
+                .collect(Collectors.toList());
+        haveTagBook.stream()
+                .forEach(System.out::println);
+
+
+        System.out.println("\n");
+        System.out.println("----Summary of all Titles----");
+        List<String> summary=tasks.stream()
+                .map(Task::getTitle)
+                .collect(Collectors.toList());
+        summary.stream().forEach(System.out::println);
+     /*   List<Task> readingTasks = new ArrayList<>();
         for (Task task : tasks) {
             if (task.getType() == TaskType.READING) {
                 readingTasks.add(task);
@@ -26,6 +95,7 @@ public class Task2 {
         });
         for (Task readingTask : readingTasks) {
             out.println(readingTask.getTitle());
-        }
+        }*/
     }
+
 }
