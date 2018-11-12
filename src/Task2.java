@@ -67,13 +67,14 @@ public class Task2 {
 
         System.out.println("\n");
         System.out.println("----Check for a Tag BOOK----");
-        List<Task> haveTagBook=tasks.stream()
+        List<Task> filterReadingTasks=tasks.stream()
                 .filter(task -> task.getType()==TaskType.READING)
-                .filter(task -> task.getTags().contains("books"))
                 .collect(Collectors.toList());
-        haveTagBook.stream()
-                .forEach(System.out::println);
 
+        Boolean hasTagBooks=filterReadingTasks.stream()
+                .allMatch(task -> task.getTags().contains("books"));
+
+        System.out.println(hasTagBooks);
 
         System.out.println("\n");
         System.out.println("----Summary of all Titles----");
